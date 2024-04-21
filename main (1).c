@@ -1,29 +1,8 @@
-/*----------------------------------------------------------------------------------------------------
-Project 3: Word Ladder - ding dong done
-Course: CS211, Spring 2024, UIC
-System: Advanced ZyLab
-Author: Pinqing Qiu
-Description: This program is a "Word Ladder" game, which would transform a starting word into
-             another word by only changing one letter. The program reads a dictionary file, filtering
-             and sort the words  of a specified length into a dynamically allocated array.
-------------------------------------------------------------------------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 
-
-//-------------------------------------------------------------------
-// TODO - Task I: write the strNumMods() function, which returns the
-//      count of character differences between two strings, including
-//      extra characters in longer string if different lengths
-// Exs: str1 = magic, str2 = magic, returns 0
-//      str1 = wands, str2 = wants, returns 1
-//      str1 = magic, str2 = wands, returns 4
-//      str1 = magic, str2 = mag, returns 2
-//      str1 = magic, str2 = magicwand, returns 4
-//      str1 = magic, str2 = darkmagic, returns 8
-//-------------------------------------------------------------------
 int strNumMods(char* str1, char* str2) {
     int ans = 0;
     int len1 = strlen(str1);
@@ -43,18 +22,6 @@ int strNumMods(char* str1, char* str2) {
     return ans;
 }
 
-
-//-------------------------------------------------------------------
-// TODO - Task II: write the strDiffInd() function, which returns the
-//      index of the character where the two strings first differ;
-//      returns strlen(str1) = strlen(str2) if no differences
-// Exs: str1 = magic, str2 = magic, returns 5
-//      str1 = wands, str2 = wants, returns 3
-//      str1 = magic, str2 = wands, returns 0
-//      str1 = magic, str2 = mag, returns 3
-//      str1 = magic, str2 = magicwand, returns 5
-//      str1 = magic, str2 = darkmagic, returns 0
-//-------------------------------------------------------------------
 int strDiffInd(char* str1, char* str2) {
     int len1 = strlen(str1);
     int len2 = strlen(str2);
@@ -73,33 +40,6 @@ int strDiffInd(char* str1, char* str2) {
     return l; //modify this
 }
 
-
-//-------------------------------------------------------------------
-// TODO - Task III: write addWord() function, which adds a new word to
-//      a dynamic heap-allocated array of C-strings; heap-space must  
-//      be allocated for the new word inside this function, then copy  
-//      the chars from [newWord] to the newly allocated heap-space;
-//      if adding the new word pushes numWords above [maxWords], then 
-//      realloate the [words] array with double the capacity
-//      parameter: 
-//          char*** words - array of C-strings passed-by-pointer
-//              note: *words is an array of pointers
-//                    **words is an array of chars
-//                    ***words is a char  
-//                    (*words)[0] is the 1st C-string in the array
-//                    (*words)[1] is the 2nd C-string in the array
-//                    (*words)[0][0] is 1st char of 1st C-string
-//                    (*words)[1][2] is 3rd char of 2nd C-string
-//                    etc.
-//          [numWords] - current # of words in [words] array
-//               note: [numWords] will increase by 1 here, 
-//                     so it is passed-by-pointer
-//          [maxWords] - current capacity of *words array
-//               note: [maxWords] may increase by x2 here, 
-//                     so it is passed-by-pointer
-//          [newWord] - C-string word to be added to [words]
-//               note: [newWord] is a C-string, naturally a pointer
-//-------------------------------------------------------------------
 void addWord(char*** words, int* numWords, int* maxWords, char* newWord) {
     if (*numWords >= *maxWords) {
         // Double the capacity
@@ -136,14 +76,6 @@ void addWord(char*** words, int* numWords, int* maxWords, char* newWord) {
     (*numWords)++;
 }
 
-
-//-------------------------------------------------------------------
-// TODO - Task V: write the findWord() function, which returns the
-//      index in the [words] C-string array where a match to the 
-//      C-string [aWord] is found, using a linear search; 
-//      return -1 if no match to [aWord] is found in [words] array;
-//      note: [words] is an array of pointers to [numWords] C-strings 
-//-------------------------------------------------------------------
 int findWord(char** words, int numWords, char* aWord) {
     for (int i = 0; i < numWords; i++) {
         if (strcmp(words[i], aWord) == 0) {
@@ -154,38 +86,6 @@ int findWord(char** words, int numWords, char* aWord) {
 }
 
 
-//-------------------------------------------------------------------
-// TODO - Task VI: write the validWordCheck() function, which checks 
-//      if [aWord] is valid for the next word in the word ladder;
-//
-//      return FALSE for the following cases:
-//        - [aWord] is invalid because it is not in the words array,  
-//              i.e. either not in dictionary OR wrong word length;
-//              before returning FALSE, first print: 
-//                  "Entered word NOT in dictionary. Try again..."
-//        - [aWord] is invalid because it is NOT a single-char 
-//              difference from the previous word in the ladder; 
-//              e.g. previous word is "code" and [aWord] is "cave";
-//              e.g. previous word is "code" and [aWord] is "code";
-//              before returning FALSE, first print: 
-//                  "Entered word is NOT a one-character change from the previous word. Try again..."
-//
-//      return TRUE for the following cases:
-//        - [aWord] is "DONE" beacuse the user wants to stop;
-//              before returning TRUE, first print: 
-//                  "Stopping with an incomplete word ladder..."
-//        - [aWord] is valid and will be added to the word ladder
-//              before returning TRUE, first print: 
-//                  "Entered word is valid and will be added to the word ladder."
-//
-//      [words] is an array of [numWords] C-strings that contains all 
-//              words in the dictionary of the correct word length
-//      [ladder] is an array of [ladderHeight] C-strings that 
-//              represents an incomplete word ladder
-//      [aWord] is a C-string that must be checked for validity here
-//
-//  HINT: call findWord(), strNumMods(), & string.h function(s)
-//-------------------------------------------------------------------
 bool validWordCheck(char** words, int numWords, char** ladder, int ladderHeight, char* aWord) {
     // Check if the user wants to stop
     if (strcmp(aWord, "DONE") == 0) {
@@ -215,15 +115,6 @@ bool validWordCheck(char** words, int numWords, char** ladder, int ladderHeight,
 }
 
 
-
-
-//-------------------------------------------------------------------
-// TODO - Task VII: write the ladderComplete() Boolean function, 
-//      which should simply check for a completed word ladder, i.e.
-//      return true if the final word in [ladderWords] is a match to 
-//      [finalWord]; otherwise, return false; the number of words in
-//      the word ladder is [n]
-//-------------------------------------------------------------------
 bool ladderComplete(char** ladderWords, int n, char* finalWord) {
     if (n <= 0)
         return false;
@@ -232,27 +123,6 @@ bool ladderComplete(char** ladderWords, int n, char* finalWord) {
     return strcmp(lastWord, finalWord) == 0;
 }
 
-
-//-------------------------------------------------------------------
-// TODO - Task IX: write the displayIncompleteLadder() function, 
-//      which should display the [n] C-strings in the [ladderWords] 
-//      array with the first word at the bottom of the ladder, and 
-//      each successive C-string one rung higher on the ladder. To 
-//      signify the ladder as incomplete, display three lines of  
-//      "..." at the top of the ladder. The ladder must be displayed 
-//      with an indentation of two whitespaces on every line;
-//      Ex: if the start word is "data" and final word is "code" and
-//          the incomplete ladder is data->date->gate->gave, then the
-//          output display should be as follows (where the quotation  
-//          marks are NOT a part of the actual display):
-//              "  ..."
-//              "  ..."
-//              "  ..."
-//              "  gave"
-//              "  gate"
-//              "  date"
-//              "  data" 
-//-------------------------------------------------------------------
 void displayIncompleteLadder(char** ladderWords, int n) {
     // Display three lines of "..." at the top of the ladder
     for (int i = 0; i < 3; i++) {
@@ -266,33 +136,6 @@ void displayIncompleteLadder(char** ladderWords, int n) {
 }
 
 
-//-------------------------------------------------------------------
-// TODO - Task X: write the displayCompleteLadder() function, 
-//      which should display the C-strings in the [ladderWords] array 
-//      with the first word at the bottom of the ladder, and each 
-//      successive C-string one rung higher on the ladder. In between
-//      each ladder rung, display the symbol '^' to signify the 
-//      character that changes between the two rungs of the ladder. 
-//      The ladder should be displayed with an indentation of two 
-//      whitespaces to the left of every word;
-//      Ex: if the start word is "data" and final word is "code" 
-//          then the output display for a complete ladder should be  
-//          as follows (where the quotation marks are NOT a part of  
-//          the actual display):
-//              "  code"
-//              "    ^ "
-//              "  cove"
-//              "   ^  "
-//              "  cave"
-//              "  ^   "
-//              "  gave"
-//              "    ^ "
-//              "  gate"
-//              "  ^   "
-//              "  date"
-//              "     ^"
-//              "  data" 
-//-------------------------------------------------------------------
 void displayCompleteLadder(char** ladderWords, int n) {
     int wordLen = strlen(ladderWords[0]);
     // Display the ladder words in reverse order
@@ -326,35 +169,7 @@ int main(int argc, char* argv[]) {
     char startWord[30] = "notAword";
     char finalWord[30] = "notValid"; 
 
-    //-------------------------------------------------------------------
-    // TODO - Task XII: handle command-line arguments
-    // command-line arguments:
-    //  [-n wordLen] = sets word length for word ladder;
-    //                 if [wordLen] is not a valid input 
-    //                 (cannot be less than 2 or greater than 20),
-    //                 or missing from command-line arguments, 
-    //                 then let user set it using interactive user input
-    // [-m maxLadder] = sets maximum word ladder height;
-    //                  [maxLadder] must be at least 2;
-    //                  if [maxLadder] is invalid or missing from 
-    //                  command-line arguments, then let user set it 
-    //                  using interactive user input
-    // [-d dictFile] = sets dictionary file;
-    //                 if [dictFile] is invalid (file not found) or 
-    //                 missing from command-line arguments, then let
-    //                 user set it using interactive user input
-    // [-s startWord] = sets the starting word;
-    //                  if [startWord] is invalid 
-    //                  (not in dictionary or incorrect length) or 
-    //                  missing from command-line arguments, then let
-    //                  user set it using interactive user input
-    // [-f finalWord] = sets the final word;
-    //                  if [finalWord] is invalid  
-    //                  (not in dictionary or incorrect length) or 
-    //                  missing from command-line arguments, then let
-    //                  user set it using interactive user input
-    //-------------------------------------------------------------------
-    // Loop through command-line arguments
+
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-n") == 0) {
             // Set word length
@@ -434,29 +249,7 @@ int main(int argc, char* argv[]) {
     int numWords = 0; // initially, no words in the array
     int maxWords = 4; // initially, capacity = 4
 
-    char** words = (char**)malloc(maxWords*sizeof(char*));
-    //-------------------------------------------------------------------
-    // TODO - Task IV: file-read the word list from the dictionary file 
-    //                 [dict], storing only words of length set by 
-    //                 [wordLen] in [words], which is a dynamically 
-    //                 growing heap-allocated array of C-strings:
-    //                      - the word list should be a dynamic array of 
-    //                        pointers, initially with capacity (i.e. 
-    //                        maximum size) 4; the capacity doubles 
-    //                        whenever more space is needed
-    //                      - each element of the word list array should 
-    //                        point to a heap-allocated C-string that 
-    //                        can store a word containing exactly 
-    //                        [wordLen] lower-case letters; don't forget
-    //                        that there must be a single char at the 
-    //                        end of the C-string for the null character
-    //
-    //                 HINT: open the file; loop to read words from the
-    //                 file and check if the word has the correct length;
-    //                 if so, add the word to the array using a call to 
-    //                 addWord(); lastly, close the file after all words 
-    //                 have been scanned
-    //-------------------------------------------------------------------
+
     FILE* file = fopen(dict, "r");
     char buffer[100];  // Assuming no word in the dictionary exceeds 100 characters
     while (fgets(buffer, sizeof(buffer), file)) {
@@ -518,21 +311,7 @@ int main(int argc, char* argv[]) {
     char aWord[30] = "XYZ";
     printf("\n");
 
-    // Let the user build a word ladder interactively & iteratively.
-    // First, check that ladder is not too long AND not complete.
-    //-------------------------------------------------------------------
-    // TODO - Task VIII: modify the while loop condition such that the 
-    //          word ladder building process continues only if ALL of  
-    //          the following conditions are met:
-    //              1. the ladder still has at least one available rung
-    //                 before reaching the maximum allowed height
-    //              2. the user is NOT attempting to stop the word ladder
-    //                 building process, which occurs if the entered word 
-    //                 [aWord] from the last iteration is "DONE"
-    //              3. the ladder is still incomplete; i.e. the last word
-    //                 added to ladder is not the final word; 
-    //                 note: this should user a call to ladderComplete() 
-    //-------------------------------------------------------------------
+
     while (ladderHeight < maxLadder && strcmp(aWord, "DONE") != 0 && !ladderComplete(ladder, ladderHeight, finalWord)) {   // modify this line 
         printf("The goal is to reach the final word: %s\n",finalWord);
         printf("The ladder is currently: \n");
@@ -575,16 +354,7 @@ int main(int argc, char* argv[]) {
         printf("Can you complete the Word Ladder next time??? \n");
     }
     
-    
-    //-------------------------------------------------------------------
-    // TODO - Task XI: free all heap-allocated memory to avoid potential 
-    //                  memory leaks. Since the word length for the word 
-    //                  ladder is variable (i.e. set by a command-line 
-    //                  argument or interactive user-input) any array
-    //                  whose size depends on the word length should be
-    //                  dynamically heap-allocated, and thus, must be
-    //                  tracked and freed before program termination
-    //-------------------------------------------------------------------
+
 
     // words
     for(int i = 0; i < numWords; i++){
